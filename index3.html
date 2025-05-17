@@ -110,7 +110,7 @@
         transition: opacity 0.2s;
       }
       .activity.selected .checkmark {
-        opacity: a;
+        opacity: 1;
       }
       .step-indicator {
         display: flex;
@@ -163,26 +163,6 @@
         font-size: 0.9rem;
         color: #666;
       }
-      .activity-preview {
-        margin-top: 1.5rem;
-        padding: 1rem;
-        background: #f9f9f9;
-        border-radius: 8px;
-        display: none;
-      }
-      .activity-preview img {
-        max-width: 100%;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-      .activity-preview h4 {
-        margin: 1rem 0;
-        color: #6f3edb;
-      }
-      .activity-preview p {
-        font-size: 0.9rem;
-        color: #666;
-      }
     </style>
   </head>
   <body>
@@ -209,69 +189,35 @@
           <div class="activity-container">
             <div class="activity" data-id="pairs">
               <div class="activity-icon">🎴</div>
-              <div class="activity-title">Memory Pairs</div>
+              <div class="activity-title">Short Term Memory Recall</div>
               <div class="activity-description">
                 Match pairs from 12 cards faced down to improve visual memory
               </div>
               <div class="checkmark">✓</div>
-            </div>
-            <div class="activity-preview" id="pairs-preview">
-              <img
-                src="/api/placeholder/400/320"
-                alt="Memory Pairs Game Preview"
-              />
-              <h4>Memory Pairs Challenge</h4>
-              <p>
-                Flip cards to find matching pairs. Train your spatial memory and
-                recall abilities with this classic memory exercise.
-              </p>
             </div>
           </div>
 
           <div class="activity-container">
             <div class="activity" data-id="color">
               <div class="activity-icon">🎨</div>
-              <div class="activity-title">Color Matching</div>
+              <div class="activity-title">Response Control & Speed</div>
               <div class="activity-description">
                 Test your cognitive flexibility with color/text matching
                 challenges
               </div>
               <div class="checkmark">✓</div>
             </div>
-            <div class="activity-preview" id="color-preview">
-              <img
-                src="/api/placeholder/400/320"
-                alt="Color Matching Game Preview"
-              />
-              <h4>Color-Word Challenge</h4>
-              <p>
-                Identify whether the color name matches the displayed color.
-                This exercises your brain's inhibitory control and cognitive
-                flexibility.
-              </p>
-            </div>
           </div>
 
           <div class="activity-container">
             <div class="activity" data-id="story">
               <div class="activity-icon">📖</div>
-              <div class="activity-title">Memory Stories</div>
+              <div class="activity-title">Long Term Recall</div>
               <div class="activity-description">
                 Answer questions about your life history to strengthen
                 autobiographical memory
               </div>
               <div class="checkmark">✓</div>
-            </div>
-            <div class="activity-preview" id="story-preview">
-              <img
-                src="/api/placeholder/400/320"
-                alt="Memory Stories Game Preview"
-              />
-              <h4>Life Story Reflection</h4>
-              <p>
-                Respond to prompts about your life experiences to strengthen
-                autobiographical memory and build a personal narrative archive.
-              </p>
             </div>
           </div>
         </div>
@@ -298,18 +244,10 @@
             selectedActivities = selectedActivities.filter(
               (id) => id !== activityId
             )
-
-            // Hide preview
-            document.getElementById(`${activityId}-preview`).style.display =
-              "none"
           } else {
             // Select
             this.classList.add("selected")
             selectedActivities.push(activityId)
-
-            // Show preview
-            document.getElementById(`${activityId}-preview`).style.display =
-              "block"
           }
 
           // Enable/disable continue button
