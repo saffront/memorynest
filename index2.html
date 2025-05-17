@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MemoryNest - Tell Us About Yourself</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background-color: #f5f9fc;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background-color: #4a90e2;
+        padding: 1.5rem;
+        color: white;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+      }
+      .tagline {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+      h2 {
+        color: #4a90e2;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #4a90e2;
+      }
+      .radio-group {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+      }
+      .radio-option {
+        display: flex;
+        align-items: center;
+      }
+      .radio-option input[type="radio"] {
+        width: auto;
+        margin-right: 8px;
+      }
+      button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #3a7bc8;
+      }
+      .step-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+      .step {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 8px;
+        color: white;
+        font-weight: bold;
+      }
+      .step.active {
+        background-color: #4a90e2;
+      }
+      footer {
+        background-color: #f0f0f0;
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .error {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">MemoryNest</div>
+      <div class="tagline">Train your brain, nurture your memory</div>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="step-indicator">
+          <div class="step">1</div>
+          <div class="step active">2</div>
+          <div class="step">3</div>
+          <div class="step">4</div>
+        </div>
+
+        <h2>Tell Us About Yourself</h2>
+        <form id="profile-form">
+          <div class="form-group">
+            <label>Gender</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input
+                  type="radio"
+                  id="male"
+                  name="gender"
+                  value="male"
+                  required
+                />
+                <label for="male">Male</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="female" name="gender" value="female" />
+                <label for="female">Female</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="other" name="gender" value="other" />
+                <label for="other">Other</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" min="18" max="120" required />
+          </div>
+
+          <div class="form-group">
+            <label for="comorbidities">Common Comorbidities (if any)</label>
+            <select id="comorbidities" multiple>
+              <option value="none">None</option>
+              <option value="hypertension">Hypertension</option>
+              <option value="diabetes">Diabetes</option>
+              <option value="depression">Depression</option>
+              <option value="anxiety">Anxiety</option>
+              <option value="heart_disease">Heart Disease</option>
+              <option value="arthritis">Arthritis</option>
+              <option value="sleep_apnea">Sleep Apnea</option>
+              <option value="parkinsons">Parkinson's Disease</option>
+              <option value="alzheimers">Alzheimer's Disease</option>
+            </select>
+            <small style="display: block; margin-top: 8px; color: #666"
+              >Hold Ctrl (or Cmd) to select multiple options</small
+            >
+          </div>
+
+          <button type="submit">Continue</button>
+        </form>
+      </div>
+    </main>
+
+    <footer>&copy; 2025 MemoryNest. All rights reserved.</footer>
+
+    <script>
+      document
+        .getElementById("profile-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault()
+
+          // Basic validation could be added here
+          const age = document.getElementById("age").value
+          if (age < 18 || age > 120) {
+            alert("Please enter a valid age between 18 and 120")
+            return
+          }
+
+          // Redirect to the next page
+          window.location.href = "activities.html"
+        })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MemoryNest - Get Started</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background-color: #f5f9fc;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background-color: #4a90e2;
+        padding: 1.5rem;
+        color: white;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+      }
+      .tagline {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+      h2 {
+        color: #4a90e2;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+      .congrats-icon {
+        font-size: 5rem;
+        margin-bottom: 1.5rem;
+        color: #4a90e2;
+      }
+      .selected-activities {
+        margin: 2rem 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .activity-tag {
+        background: #eef5fd;
+        color: #4a90e2;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .activity-tag .icon {
+        font-size: 1.2rem;
+      }
+      .step-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+      .step {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 8px;
+        color: white;
+        font-weight: bold;
+      }
+      .step.active {
+        background-color: #4a90e2;
+      }
+      button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: block;
+        margin: 2rem auto 0;
+      }
+      button:hover {
+        background-color: #3a7bc8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .summary {
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        text-align: left;
+      }
+      .summary h3 {
+        color: #4a90e2;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      .summary-item {
+        display: flex;
+        margin-bottom: 0.5rem;
+      }
+      .summary-label {
+        width: 150px;
+        font-weight: 500;
+        color: #666;
+      }
+      footer {
+        background-color: #f0f0f0;
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .get-started-description {
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        line-height: 1.6;
+        color: #555;
+      }
+      .custom-plan {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        background: #f0f7ff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-top: 2rem;
+      }
+      .custom-plan-icon {
+        font-size: 2.5rem;
+        color: #4a90e2;
+      }
+      .features {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 2rem 0;
+      }
+      .feature {
+        flex-basis: 30%;
+        min-width: 200px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+      .feature-icon {
+        font-size: 2.5rem;
+        color: #4a90e2;
+        margin-bottom: 1rem;
+      }
+      .feature-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #4a90e2;
+      }
+      .feature-description {
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #f0f;
+        animation: confetti 5s ease-in-out infinite;
+      }
+      @keyframes confetti {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(1000px) rotate(720deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">MemoryNest</div>
+      <div class="tagline">Train your brain, nurture your memory</div>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="step-indicator">
+          <div class="step">1</div>
+          <div class="step">2</div>
+          <div class="step">3</div>
+          <div class="step active">4</div>
+        </div>
+
+        <div class="congrats-icon">🎉</div>
+        <h2>You're All Set!</h2>
+        <p class="get-started-description">
+          Congratulations on setting up your MemoryNest account! We've created a
+          personalized brain training plan based on your selections. Your
+          journey to better cognitive health starts now.
+        </p>
+
+        <div class="summary">
+          <h3>Your Profile Summary</h3>
+          <div class="summary-item">
+            <div class="summary-label">Email:</div>
+            <div class="summary-value" id="email-summary"></div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Age:</div>
+            <div class="summary-value" id="age-summary"></div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Activities:</div>
+            <div class="summary-value" id="activities-summary"></div>
+          </div>
+        </div>
+
+        <h3>Your Selected Activities</h3>
+        <div class="selected-activities" id="selected-activities-display">
+          <!-- Will be populated by JavaScript -->
+        </div>
+
+        <div class="custom-plan">
+          <div class="custom-plan-icon">📊</div>
+          <div>
+            <h3>Your Custom Training Plan</h3>
+            <p>
+              We've created a personalized 8-week training schedule to help you
+              achieve optimal results.
+            </p>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">📱</div>
+            <div class="feature-title">Mobile App</div>
+            <div class="feature-description">
+              Access your training on any device with our mobile app
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">📈</div>
+            <div class="feature-title">Progress Tracking</div>
+            <div class="feature-description">
+              Monitor improvements with detailed analytics
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">🏆</div>
+            <div class="feature-title">Achievements</div>
+            <div class="feature-description">
+              Earn rewards as you meet training goals
+            </div>
+          </div>
+        </div>
+
+        <button id="start-training-btn">Begin Your Training</button>
+      </div>
+    </main>
+
+    <footer>&copy; 2025 MemoryNest. All rights reserved.</footer>
+
+    <script>
+      // Create confetti effect
+      function createConfetti() {
+        const colors = [
+          "#4a90e2",
+          "#e67e22",
+          "#2ecc71",
+          "#e74c3c",
+          "#9b59b6",
+          "#f1c40f",
+        ]
+        const confettiCount = 100
+
+        for (let i = 0; i < confettiCount; i++) {
+          const confetti = document.createElement("div")
+          confetti.classList.add("confetti")
+
+          // Random positioning
+          confetti.style.left = Math.random() * 100 + "vw"
+          confetti.style.top = -20 + "px"
+
+          // Random color
+          confetti.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)]
+
+          // Random size
+          const size = Math.random() * 10 + 5
+          confetti.style.width = size + "px"
+          confetti.style.height = size + "px"
+
+          // Random animation duration and delay
+          confetti.style.animationDuration = Math.random() * 3 + 2 + "s"
+          confetti.style.animationDelay = Math.random() * 5 + "s"
+
+          document.body.appendChild(confetti)
+
+          // Remove after animation
+          setTimeout(() => {
+            confetti.remove()
+          }, 5000)
+        }
+      }
+
+      // Create confetti when page loads
+      window.addEventListener("load", createConfetti)
+
+      // Retrieve and display selected activities
+      const activitiesContainer = document.getElementById(
+        "selected-activities-display"
+      )
+      const activitiesSummary = document.getElementById("activities-summary")
+
+      // Map of activity IDs to their display information
+      const activityInfo = {
+        pairs: { name: "Memory Pairs", icon: "🎴" },
+        color: { name: "Color Matching", icon: "🎨" },
+        story: { name: "Memory Stories", icon: "📖" },
+      }
+
+      // Get activities from localStorage
+      const selectedActivities =
+        JSON.parse(localStorage.getItem("selectedActivities")) || []
+
+      if (selectedActivities.length > 0) {
+        let activitiesText = ""
+
+        selectedActivities.forEach((activityId) => {
+          const activity = activityInfo[activityId]
+
+          // Create activity tag
+          const activityTag = document.createElement("div")
+          activityTag.classList.add("activity-tag")
+          activityTag.innerHTML = `
+                    <span class="icon">${activity.icon}</span>
+                    <span>${activity.name}</span>
+                `
+          activitiesContainer.appendChild(activityTag)
+
+          // Add to summary text
+          activitiesText += activity.name + ", "
+        })
+
+        // Set summary text
+        activitiesSummary.textContent = activitiesText.slice(0, -2) // Remove trailing comma and space
+      } else {
+        // Fallback if no activities were selected
+        activitiesContainer.innerHTML =
+          "<p>No activities selected. Please go back and select at least one activity.</p>"
+        activitiesSummary.textContent = "None selected"
+      }
+
+      // Set dummy email and age for demo
+      document.getElementById("email-summary").textContent = "user@example.com"
+      document.getElementById("age-summary").textContent = "45"
+
+      // Handle start training button
+      document
+        .getElementById("start-training-btn")
+        .addEventListener("click", function () {
+          // In a real app, this would go to the dashboard
+          // For demo, we'll just cycle back to the first game
+          window.location.href = "memory-pairs.html"
+        })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Matching Game</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM CDN -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Custom styles -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(to bottom right, #e0e7ff, #f5f3ff);
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Game Container - No title here, let React handle everything -->
+    <div id="root"></div>
+
+    <!-- Game Script -->
+    <script type="text/babel">
+      const ColorGame = () => {
+        const colors = [
+          "red",
+          "blue",
+          "green",
+          "yellow",
+          "purple",
+          "orange",
+          "pink",
+          "brown",
+          "black",
+        ]
+
+        const [topColor, setTopColor] = React.useState("")
+        const [bottomColor, setBottomColor] = React.useState("")
+        const [bottomWord, setBottomWord] = React.useState("")
+        const [score, setScore] = React.useState(0)
+        const [timeLeft, setTimeLeft] = React.useState(30)
+        const [gameActive, setGameActive] = React.useState(false)
+        const [gameStarted, setGameStarted] = React.useState(false)
+        const [feedback, setFeedback] = React.useState("")
+
+        // Generate a new round
+        const generateNewRound = () => {
+          // Select a random color for the top text (the name of the color)
+          const newTopColorIndex = Math.floor(Math.random() * colors.length)
+          const topColorName = colors[newTopColorIndex]
+          setTopColor(topColorName)
+
+          // 50% chance to make the bottom text match (correct answer)
+          const shouldMatch = Math.random() < 0.5
+
+          if (shouldMatch) {
+            // Make them match - bottom text color is the same as top text name
+            setBottomColor(topColorName)
+            // Choose a random color name to display at the bottom
+            const newBottomTextIndex = Math.floor(Math.random() * colors.length)
+            setBottomWord(colors[newBottomTextIndex])
+          } else {
+            // Make them not match - choose a different color for bottom text
+            let differentColorIndex
+            do {
+              differentColorIndex = Math.floor(Math.random() * colors.length)
+            } while (colors[differentColorIndex] === topColorName)
+
+            setBottomColor(colors[differentColorIndex])
+            // Choose a random color name to display at the bottom
+            const newBottomTextIndex = Math.floor(Math.random() * colors.length)
+            setBottomWord(colors[newBottomTextIndex])
+          }
+
+          setFeedback("")
+        }
+
+        // Handle user answer
+        const handleAnswer = (isMatch) => {
+          const actualMatch = topColor === bottomColor
+
+          if (isMatch === actualMatch) {
+            setScore(score + 1)
+            setFeedback("Correct!")
+          } else {
+            setFeedback("Wrong!")
+          }
+
+          setTimeout(() => {
+            generateNewRound()
+          }, 1000)
+        }
+
+        // Start new game
+        const startNewGame = () => {
+          setScore(0)
+          setTimeLeft(30)
+          setGameActive(true)
+          setGameStarted(true)
+          generateNewRound()
+        }
+
+        // Restart game
+        const restartGame = () => {
+          setScore(0)
+          setTimeLeft(30)
+          setFeedback("")
+          generateNewRound()
+        }
+
+        // Initialize game
+        React.useEffect(() => {
+          // Don't automatically start game, wait for button press
+          if (gameStarted) {
+            generateNewRound()
+          }
+        }, [gameStarted])
+
+        // Timer
+        React.useEffect(() => {
+          if (!gameActive) return
+
+          const timer = setInterval(() => {
+            setTimeLeft((prev) => {
+              if (prev <= 1) {
+                clearInterval(timer)
+                setGameActive(false)
+                return 0
+              }
+              return prev - 1
+            })
+          }, 1000)
+
+          return () => clearInterval(timer)
+        }, [gameActive])
+
+        // Main render function
+        return (
+          <>
+            {/* Main title visible on all screens */}
+            <h1 className="text-4xl font-bold mb-8 text-indigo-800 text-center">
+              Color Matching Game
+            </h1>
+
+            {/* Game container */}
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border-4 border-indigo-200">
+              {!gameStarted ? (
+                // Start screen
+                <div className="text-center py-8">
+                  <p className="text-xl mb-8 text-gray-600">
+                    Match the color name at the top with the actual color of the
+                    text at the bottom.
+                  </p>
+                  <button
+                    onClick={startNewGame}
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-xl"
+                  >
+                    Start Game
+                  </button>
+                </div>
+              ) : gameActive ? (
+                // Active game
+                <>
+                  <div className="flex justify-between mb-6">
+                    <div className="text-lg font-bold px-4 py-2 bg-indigo-100 rounded-lg text-indigo-800">
+                      Score: {score}
+                    </div>
+                    <div className="text-lg font-bold px-4 py-2 bg-amber-100 rounded-lg text-amber-800">
+                      Time: {timeLeft}s
+                    </div>
+                  </div>
+
+                  <div className="text-center mb-6">
+                    <div className="bg-gray-50 py-8 rounded-xl mb-8 shadow-inner">
+                      <div className="text-5xl font-bold mb-2 tracking-wide">
+                        {topColor.toUpperCase()}
+                      </div>
+                    </div>
+
+                    <div
+                      className="text-5xl font-bold tracking-wide py-8 px-4 rounded-xl shadow-inner bg-gray-50 mb-8"
+                      style={{ color: bottomColor }}
+                    >
+                      {bottomWord.toUpperCase()}
+                    </div>
+
+                    {feedback && (
+                      <div
+                        className={`text-xl font-bold py-2 mb-4 rounded-lg ${
+                          feedback === "Correct!"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {feedback}
+                      </div>
+                    )}
+
+                    <div className="flex justify-center gap-6 mt-4">
+                      <button
+                        onClick={() => handleAnswer(true)}
+                        className="bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                      >
+                        Match
+                      </button>
+                      <button
+                        onClick={() => handleAnswer(false)}
+                        className="bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                      >
+                        No Match
+                      </button>
+                    </div>
+
+                    <div className="mt-8">
+                      <button
+                        onClick={restartGame}
+                        className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-all shadow-md hover:shadow-lg"
+                      >
+                        Restart
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                // Game over screen
+                <div className="text-center py-8">
+                  <div className="text-4xl font-bold mb-2 text-indigo-800">
+                    Game Over!
+                  </div>
+                  <div className="text-2xl mb-8 text-gray-600">
+                    Your final score:{" "}
+                    <span className="font-bold text-indigo-600">{score}</span>
+                  </div>
+                  <button
+                    onClick={startNewGame}
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                  >
+                    Play Again
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        )
+      }
+
+      // Render the game
+      ReactDOM.createRoot(document.getElementById("root")).render(<ColorGame />)
+    </script>
+  </body>
+</html>

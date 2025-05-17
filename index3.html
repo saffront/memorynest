@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MemoryNest - Choose Activities</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background-color: #f5f9fc;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background-color: #4a90e2;
+        padding: 1.5rem;
+        color: white;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+      }
+      .tagline {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+      h2 {
+        color: #4a90e2;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+      .activities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+      }
+      .activity {
+        background: #f9f9f9;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 1.5rem;
+        width: 230px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .activity:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        border-color: #4a90e2;
+      }
+      .activity.selected {
+        border-color: #4a90e2;
+        background-color: #eef5fd;
+      }
+      .activity-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #4a90e2;
+      }
+      .activity-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #4a90e2;
+      }
+      .activity-description {
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .checkmark {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 25px;
+        height: 25px;
+        background: #4a90e2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .activity.selected .checkmark {
+        opacity: a;
+      }
+      .step-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+      .step {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 8px;
+        color: white;
+        font-weight: bold;
+      }
+      .step.active {
+        background-color: #4a90e2;
+      }
+      .activity-container {
+        position: relative;
+        margin-bottom: 2rem;
+      }
+      button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: block;
+        margin: 2rem auto 0;
+      }
+      button:hover {
+        background-color: #3a7bc8;
+      }
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      footer {
+        background-color: #f0f0f0;
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .activity-preview {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-radius: 8px;
+        display: none;
+      }
+      .activity-preview img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .activity-preview h4 {
+        margin: 1rem 0;
+        color: #4a90e2;
+      }
+      .activity-preview p {
+        font-size: 0.9rem;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">MemoryNest</div>
+      <div class="tagline">Train your brain, nurture your memory</div>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="step-indicator">
+          <div class="step">1</div>
+          <div class="step">2</div>
+          <div class="step active">3</div>
+          <div class="step">4</div>
+        </div>
+
+        <h2>What Would You Like to Improve?</h2>
+        <p style="text-align: center; margin-bottom: 2rem">
+          Choose one or more activities to enhance your cognitive abilities
+        </p>
+
+        <div class="activities">
+          <div class="activity-container">
+            <div class="activity" data-id="pairs">
+              <div class="activity-icon">🎴</div>
+              <div class="activity-title">Memory Pairs</div>
+              <div class="activity-description">
+                Match pairs from 12 cards faced down to improve visual memory
+              </div>
+              <div class="checkmark">✓</div>
+            </div>
+            <div class="activity-preview" id="pairs-preview">
+              <img
+                src="/api/placeholder/400/320"
+                alt="Memory Pairs Game Preview"
+              />
+              <h4>Memory Pairs Challenge</h4>
+              <p>
+                Flip cards to find matching pairs. Train your spatial memory and
+                recall abilities with this classic memory exercise.
+              </p>
+            </div>
+          </div>
+
+          <div class="activity-container">
+            <div class="activity" data-id="color">
+              <div class="activity-icon">🎨</div>
+              <div class="activity-title">Color Matching</div>
+              <div class="activity-description">
+                Test your cognitive flexibility with color/text matching
+                challenges
+              </div>
+              <div class="checkmark">✓</div>
+            </div>
+            <div class="activity-preview" id="color-preview">
+              <img
+                src="/api/placeholder/400/320"
+                alt="Color Matching Game Preview"
+              />
+              <h4>Color-Word Challenge</h4>
+              <p>
+                Identify whether the color name matches the displayed color.
+                This exercises your brain's inhibitory control and cognitive
+                flexibility.
+              </p>
+            </div>
+          </div>
+
+          <div class="activity-container">
+            <div class="activity" data-id="story">
+              <div class="activity-icon">📖</div>
+              <div class="activity-title">Memory Stories</div>
+              <div class="activity-description">
+                Answer questions about your life history to strengthen
+                autobiographical memory
+              </div>
+              <div class="checkmark">✓</div>
+            </div>
+            <div class="activity-preview" id="story-preview">
+              <img
+                src="/api/placeholder/400/320"
+                alt="Memory Stories Game Preview"
+              />
+              <h4>Life Story Reflection</h4>
+              <p>
+                Respond to prompts about your life experiences to strengthen
+                autobiographical memory and build a personal narrative archive.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button id="continue-btn" disabled>Continue</button>
+      </div>
+    </main>
+
+    <footer>&copy; 2025 MemoryNest. All rights reserved.</footer>
+
+    <script>
+      // Handle activity selection
+      const activities = document.querySelectorAll(".activity")
+      const continueBtn = document.getElementById("continue-btn")
+      let selectedActivities = []
+
+      activities.forEach((activity) => {
+        activity.addEventListener("click", function () {
+          const activityId = this.getAttribute("data-id")
+
+          if (this.classList.contains("selected")) {
+            // Deselect
+            this.classList.remove("selected")
+            selectedActivities = selectedActivities.filter(
+              (id) => id !== activityId
+            )
+
+            // Hide preview
+            document.getElementById(`${activityId}-preview`).style.display =
+              "none"
+          } else {
+            // Select
+            this.classList.add("selected")
+            selectedActivities.push(activityId)
+
+            // Show preview
+            document.getElementById(`${activityId}-preview`).style.display =
+              "block"
+          }
+
+          // Enable/disable continue button
+          continueBtn.disabled = selectedActivities.length === 0
+        })
+      })
+
+      // Handle continue button
+      continueBtn.addEventListener("click", function () {
+        localStorage.setItem(
+          "selectedActivities",
+          JSON.stringify(selectedActivities)
+        )
+        window.location.href = "get-started.html"
+      })
+    </script>
+  </body>
+</html>
