@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Story - AmazeMind</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+
+      /* App specific styles */
+      .container {
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background-color: white;
+        overflow: hidden;
+      }
+
+      /* Notification View Styles */
+      .notification-view {
+        height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+          url(https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80);
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        color: white;
+      }
+
+      .status-bar {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .time {
+        font-size: 60px;
+        font-weight: 300;
+      }
+
+      .date {
+        font-size: 18px;
+        margin-top: 4px;
+      }
+
+      .notifications {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .notification {
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        cursor: pointer;
+      }
+
+      .notification-content {
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .app-icon {
+        height: 48px;
+        width: 48px;
+        background-color: #8b5cf6;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+      }
+
+      .app-icon svg {
+        height: 28px;
+        width: 28px;
+        color: white;
+      }
+
+      .notification-text {
+        flex: 1;
+      }
+
+      .notification-header {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .app-name {
+        font-weight: bold;
+      }
+
+      .notification-time {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .notification-title {
+        margin-top: 4px;
+        font-weight: bold;
+      }
+
+      .notification-body {
+        margin-top: 4px;
+      }
+
+      /* Chat View Styles */
+      .chat-view {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: #f3f4f6;
+        overflow: hidden;
+      }
+
+      .chat-header {
+        background-color: #8b5cf6;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        color: white;
+      }
+
+      .back-button {
+        cursor: pointer;
+      }
+
+      .header-title {
+        flex: 1;
+        text-align: center;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .header-title svg {
+        margin-right: 6px;
+        height: 20px;
+        width: 20px;
+      }
+
+      .header-spacer {
+        width: 40px;
+      }
+
+      .messages-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+        background-color: white;
+      }
+
+      .date-header {
+        display: flex;
+        justify-content: center;
+        margin: 8px 0;
+      }
+
+      .date-pill {
+        background-color: #e5e7eb;
+        border-radius: 9999px;
+        padding: 4px 16px;
+        font-size: 12px;
+        color: #4b5563;
+      }
+
+      .theme-title {
+        display: flex;
+        justify-content: center;
+        margin: 8px 0 16px 0;
+      }
+
+      .theme-pill {
+        background-color: #ede9fe;
+        border-radius: 9999px;
+        padding: 6px 16px;
+        font-size: 14px;
+        color: #8b5cf6;
+        font-weight: bold;
+      }
+
+      .message {
+        display: flex;
+        margin-bottom: 16px;
+      }
+
+      .message.bot {
+        justify-content: flex-start;
+      }
+
+      .message.user {
+        justify-content: flex-end;
+      }
+
+      .message-bubble {
+        max-width: 80%;
+        padding: 12px 16px;
+        border-radius: 16px;
+      }
+
+      .message.bot .message-bubble {
+        background-color: #8b5cf6;
+        color: white;
+        border-bottom-left-radius: 4px;
+      }
+
+      .message.user .message-bubble {
+        background-color: #f3f4f6;
+        color: #111827;
+        border-bottom-right-radius: 4px;
+      }
+
+      .message-time {
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .message.bot .message-time {
+        opacity: 0.7;
+      }
+
+      .message.user .message-time {
+        color: #6b7280;
+        text-align: right;
+      }
+
+      .mic-button-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .mic-button {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background-color: #8b5cf6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .mic-button svg {
+        width: 30px;
+        height: 30px;
+        color: white;
+      }
+
+      /* Next game button */
+      .next-game-button {
+        background-color: #22c55e;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 20px auto;
+        display: block;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s;
+      }
+
+      .next-game-button:hover {
+        background-color: #16a34a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <!-- Content will be dynamically inserted here -->
+    </div>
+
+    <script>
+      // Current stage (notification, recording, transcript, followup, completed)
+      let currentStage = "notification"
+
+      // Current date and time
+      const today = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+      })
+      const currentTime = new Date().toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      })
+
+      // SVG icons
+      const brainIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.04Z"></path>
+      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.04Z"></path>
+    </svg>`
+
+      const wrenchIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+    </svg>`
+
+      const micIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+      <line x1="12" x2="12" y1="19" y2="22"></line>
+    </svg>`
+
+      // Function to render the notification view
+      function renderNotificationView() {
+        return `
+        <div class="notification-view">
+          <div class="status-bar">
+            <div class="time">${currentTime}</div>
+            <div class="date">${today}</div>
+          </div>
+          
+          <div class="notifications">
+            <div class="notification" onclick="setStage('recording')">
+              <div class="notification-content">
+                <div class="app-icon">
+                  ${wrenchIconSVG}
+                </div>
+                <div class="notification-text">
+                  <div class="notification-header">
+                    <div class="app-name">AmazeMind</div>
+                    <div class="notification-time">9:48 PM</div>
+                  </div>
+                  <div class="notification-title">1️⃣ "First Job" — work & identity theme</div>
+                  <div class="notification-body">🛠 "Flashback Friday! Tell us about your very first job."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+      }
+
+      // Function to render the chat view
+      function renderChatView() {
+        return `
+        <div class="chat-view">
+          <div class="chat-header">
+            <div class="back-button" onclick="setStage('notification')">← Back</div>
+            <div class="header-title">
+              ${brainIconSVG}
+              AmazeMind
+            </div>
+            <div class="header-spacer"></div>
+          </div>
+          
+          <div class="messages-area">
+            <!-- Date header -->
+            <div class="date-header">
+              <div class="date-pill">${today}</div>
+            </div>
+            
+            <!-- Theme title -->
+            <div class="theme-title">
+              <div class="theme-pill">1️⃣ "First Job" — work & identity theme</div>
+            </div>
+            
+            <!-- Initial bot message -->
+            <div class="message bot">
+              <div class="message-bubble">
+                <div>Hi Margaret! Ready to plant today's memory seed? When you're set, hit the mic and answer:
+                ▪ What was your very first job?
+                ▪ Where was it?
+                ▪ How much did you earn per week?</div>
+                <div class="message-time">9:48 PM</div>
+              </div>
+            </div>
+            
+            <!-- Recording button (recording stage) -->
+            ${
+              currentStage === "recording"
+                ? `
+              <div class="mic-button-container">
+                <div class="mic-button" onclick="handleMicClick()">
+                  ${micIconSVG}
+                </div>
+              </div>
+            `
+                : ""
+            }
+            
+            <!-- User transcript (transcript and later stages) -->
+            ${
+              currentStage === "transcript" ||
+              currentStage === "followup" ||
+              currentStage === "completed"
+                ? `
+              <div class="message user">
+                <div class="message-bubble">
+                  <div>"I worked as a waitress at the Bluebird Café in 1962 and made three pounds a week."</div>
+                  <div class="message-time">${currentTime}</div>
+                </div>
+              </div>
+            `
+                : ""
+            }
+            
+            <!-- Follow-up questions (followup stage) -->
+            ${
+              currentStage === "followup" || currentStage === "completed"
+                ? `
+              <div class="message bot">
+                <div class="message-bubble">
+                  <div>Love it! Two quick follow-ups so future you can relive the moment:
+                  1️⃣ Who was your favourite coworker?
+                  2️⃣ What menu item did you serve the most?</div>
+                  <div class="message-time">${currentTime}</div>
+                </div>
+              </div>
+            `
+                : ""
+            }
+            
+            <!-- Follow-up recording button -->
+            ${
+              currentStage === "followup"
+                ? `
+              <div class="mic-button-container">
+                <div class="mic-button" onclick="handleFollowUpMicClick()">
+                  ${micIconSVG}
+                </div>
+              </div>
+            `
+                : ""
+            }
+            
+            <!-- Completed stage - show user answer and final message -->
+            ${
+              currentStage === "completed"
+                ? `
+              <div class="message user">
+                <div class="message-bubble">
+                  <div>Molly was my favorite coworker. She taught me all the tricks. We served tons of fish and chips, that was the most popular item by far!</div>
+                  <div class="message-time">${currentTime}</div>
+                </div>
+              </div>
+              
+              <div class="message bot">
+                <div class="message-bubble">
+                  <div>Fantastic. Story saved to the 1960s. See you tomorrow for a tiny quiz!</div>
+                  <div class="message-time">${currentTime}</div>
+                </div>
+              </div>
+              
+              <!-- Next Game Button (only in completed stage) -->
+              <button class="next-game-button" onclick="goToNextGame()">Next Game</button>
+            `
+                : ""
+            }
+          </div>
+        </div>
+      `
+      }
+
+      // Function to set the current stage and update the UI
+      function setStage(stage) {
+        currentStage = stage
+        renderApp()
+      }
+
+      // Function to handle the mic button click
+      function handleMicClick() {
+        setStage("transcript")
+
+        // After showing transcript, move to followup
+        setTimeout(() => {
+          setStage("followup")
+        }, 1500)
+      }
+
+      // Function to handle the follow-up mic button click
+      function handleFollowUpMicClick() {
+        // Just set to completed stage
+        setTimeout(() => {
+          setStage("completed")
+        }, 1500)
+      }
+
+      // Function to go to the next game
+      function goToNextGame() {
+        window.location.href = "/color.html"
+      }
+
+      // Function to render the app based on the current stage
+      function renderApp() {
+        const appElement = document.getElementById("app")
+
+        if (currentStage === "notification") {
+          appElement.innerHTML = renderNotificationView()
+        } else {
+          appElement.innerHTML = renderChatView()
+        }
+      }
+
+      // Initialize the app
+      document.addEventListener("DOMContentLoaded", () => {
+        renderApp()
+      })
+    </script>
+  </body>
+</html>
